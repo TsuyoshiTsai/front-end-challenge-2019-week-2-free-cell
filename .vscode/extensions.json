@@ -1,0 +1,15 @@
+{
+  // See http://go.microsoft.com/fwlink/?LinkId=827846
+  // for the documentation about the extensions.json format
+  "recommendations": [
+    // ENVIRONMENT
+
+    // DEVELOPMENT
+    // prettier
+    "esbenp.prettier-vscode",
+    // react snippets
+    "xabikos.reactsnippets",
+    // auto rename tag
+    "formulahendry.auto-rename-tag"
+  ]
+}
