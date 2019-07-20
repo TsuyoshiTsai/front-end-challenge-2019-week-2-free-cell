@@ -76,6 +76,7 @@
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "resolve": "1.10.0",
+    "rxjs": "^6.5.2",
     "sass-loader": "7.1.0",
     "sass-resources-loader": "^2.0.0",
     "semver": "6.0.0",
