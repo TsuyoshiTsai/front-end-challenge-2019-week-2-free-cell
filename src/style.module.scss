@@ -1,3 +1,27 @@
 .app {
+  height: 100vh;
   background-color: $gray-lightest;
+
+  &__main {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    max-width: 1000px;
+    height: 100%;
+  }
+
+  &__content {
+    padding: 30px 15px;
+    height: 100%;
+  }
+
+  &__footer {
+    padding: 20px 0;
+    display: flex;
+    border-top: 1px solid $gray-light;
+  }
+
+  &__action-list-wrapper {
+    margin-left: auto;
+  }
 }
