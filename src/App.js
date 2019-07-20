@@ -1,21 +1,18 @@
 import React from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { hot } from 'react-hot-loader'
+import { withRouter } from 'react-router-dom'
+// import PropTypes from 'prop-types'
+// import classnames from 'classnames/bind'
 
-function App () {
-  return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a className='App-link' href='https://reactjs.org' target='_blank' rel='noopener noreferrer'>
-          Learn React
-        </a>
-      </header>
-    </div>
-  )
+// Style
+// import styles from './style.module.scss'
+
+export const propTypes = {}
+
+function App (props) {
+  return <div>app</div>
 }
 
-export default App
+App.propTypes = propTypes
+
+export default hot(module)(withRouter(App))
