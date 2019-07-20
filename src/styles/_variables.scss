@@ -3,23 +3,18 @@
 //
 
 // basic
-$color-primary-dark                   : rgb(187, 068, 058); // #bb443a
-$color-primary                        : rgb(234, 085, 072); // #ea5548
-$color-primary-light                  : rgb(249, 204, 200); // #f9ccc8
-
-$color-green-dark                     : rgb(049, 105, 000); // #316901
-$color-green-light                    : rgb(181, 226, 084); // #b5e254
-
-$color-danger                         : rgb(250, 000, 000); // #fa0000
+$color-primary-dark                   : darken(rgb(255, 181, 062), 25%); // #ffb53e
+$color-primary                        : rgb(255, 181, 062); // #ffb53e
+$color-primary-light                  : lighten(rgb(255, 181, 062), 25%); // #ffb53e
 
 // gray
 $gray-black                           : rgb(000, 000, 000); // #000000
-$gray-darkest                         : rgb(051, 051, 051); // #333333
+$gray-darkest                         : rgb(034, 034, 034); // #222222
 $gray-darker                          : rgb(065, 065, 065); // #414141
 $gray-dark                            : rgb(096, 096, 096); // #606060
-$gray                                 : rgb(110, 110, 110); // #6e6e6e
-$gray-light                           : rgb(172, 172, 172); // #acacac
-$gray-lighter                         : rgb(234, 234, 234); // #eaeaea
+$gray                                 : rgb(186, 186, 186); // #bababa
+$gray-light                           : rgb(204, 204, 204); // #cccccc
+$gray-lighter                         : rgb(226, 226, 226); // #e2e2e2
 $gray-lightest                        : rgb(252, 252, 252); // #fcfcfc
 $gray-white                           : rgb(255, 255, 255); // #ffffff
 
