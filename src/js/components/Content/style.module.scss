@@ -1,2 +1,46 @@
-.main {
+$card-width: 95px;
+$card-height: 145px;
+
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.stack-container {
+  margin-top: 35px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.parking {
+  width: $card-width;
+  height: $card-height;
+  background-color: yellow;
+}
+
+.fundation {
+  width: $card-width;
+  height: $card-height;
+  background-color: pink;
+}
+
+.pile-list {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.pile-item {
+  position: relative;
+}
+
+.card {
+  position: absolute;
+  width: $card-width;
+  height: $card-height;
+  border: 1px solid $gray-light;
+  border-radius: 3px;
+  background-color: $gray-lighter;
 }
