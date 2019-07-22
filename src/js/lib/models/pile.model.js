@@ -1,15 +1,17 @@
-export class Pile {
+class IPile {
+  cards // Card[]
+  addCards // Function
+  removeCards // Function
+}
+
+export class ColumnPile extends IPile {
   cards // Card[]
 
   constructor (cards) {
+    super()
+
     this.cards = cards || []
     this.setLastCard()
-  }
-
-  get data () {
-    const { cards } = this
-
-    return { cards }
   }
 
   setLastCard () {
@@ -33,4 +35,39 @@ export class Pile {
     this.cards = this.cards.slice(0, -size)
     this.setLastCard()
   }
+}
+
+export class ParkingPile extends IPile {
+  cards // Card[]
+
+  constructor () {
+    super()
+
+    this.cards = []
+  }
+
+  addCards (cards) {
+    this.cards = [cards]
+  }
+
+  removeCards () {
+    this.card = []
+  }
+}
+
+export class FundationPile extends IPile {
+  cards // Card[]
+
+  constructor () {
+    super()
+
+    this.cards = []
+  }
+
+  addCards (cards) {
+    this.cards = [...this.cards, ...cards]
+  }
+
+  // can't remove cards
+  removeCards () {}
 }

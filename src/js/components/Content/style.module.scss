@@ -14,22 +14,23 @@ $card-height: 145px;
   justify-content: space-between;
 }
 
-.parking {
-  width: $card-width;
-  height: $card-height;
-  background-color: yellow;
+.king {
+  margin: 0 23px;
+  flex-shrink: 0;
+  width: 74px;
 }
 
-.fundation {
+.slot {
   width: $card-width;
   height: $card-height;
-  background-color: pink;
+  border: 1px solid $gray-lightest;
+  border-radius: 3px;
 }
 
 .pile-list {
   display: flex;
   justify-content: space-between;
-  height: 100%;
+  width: 100%;
 }
 
 .pile-item {
