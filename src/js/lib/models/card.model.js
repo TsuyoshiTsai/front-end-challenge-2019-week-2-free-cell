@@ -3,7 +3,6 @@ import { Enum } from '../utils/enum'
 export const CardSuit = Enum('spade', 'heart', 'diamond', 'club')
 export const CardColor = Enum('red', 'black')
 
-// console.log('CardSuit :', Object.keys(CardSuit))
 export class Card {
   rank // number
   suit // CardSuit

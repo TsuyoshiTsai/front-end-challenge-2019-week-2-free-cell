@@ -65,20 +65,20 @@ function Content (props) {
                   <div className={cx('card-slot')}>{index}</div>
 
                   {columnPile.cards.map((card, index) => {
-                    const uniqKey = `${card.suit.toString()}${card.rank}`
+                    const rankWithSuit = `${card.suit.description}${card.rank}`
 
                     return (
-                      <Draggable key={uniqKey} draggableId={uniqKey} index={index}>
+                      <Draggable key={rankWithSuit} draggableId={rankWithSuit} index={index}>
                         {(provided, snapshot) => (
-                          <div
+                          <img
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             ref={provided.innerRef}
                             className={cx('card-item')}
                             style={{ top: 25 * index, ...provided.draggableProps.style }}
-                          >
-                            {card.rank} {card.suit.toString()}
-                          </div>
+                            src={require(`../../../assets/images/cards/${rankWithSuit}.png`)}
+                            alt={rankWithSuit}
+                          />
                         )}
                       </Draggable>
                     )
