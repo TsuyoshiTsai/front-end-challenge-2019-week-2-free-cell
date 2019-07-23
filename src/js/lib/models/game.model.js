@@ -17,9 +17,14 @@ export class Game {
     )(Object.values(CardSuit))
 
     // receiver
-    this.columnPiles = new Array(8)
-      .fill(0)
-      .map((empty, index) => new ColumnPile(cards.slice(index * (index < 4 ? 7 : 6), (index + 1) * (index < 4 ? 7 : 6))))
+    this.columnPiles = new Array(8).fill(0).map((empty, index) => {
+      const count = index < 4 ? 7 : 6
+      const patch = index < 4 ? 0 : 4
+      const from = index * count + patch
+      const to = from + count
+
+      return new ColumnPile(cards.slice(from, to))
+    })
 
     this.parkingPiles = new Array(4).fill(0).map(() => new ParkingPile())
     this.fundationPiles = new Array(4).fill(0).map(() => new FundationPile())

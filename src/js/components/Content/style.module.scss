@@ -20,28 +20,28 @@ $card-height: 145px;
   width: 74px;
 }
 
-.slot {
-  width: $card-width;
-  height: $card-height;
-  border: 1px solid $gray-lightest;
-  border-radius: 3px;
-}
-
 .pile-list {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
 
-.pile-item {
+.card-list {
   position: relative;
 }
 
-.card {
+.card-slot {
+  width: $card-width;
+  height: $card-height;
+  border: 1px solid $gray-lightest;
+  border-radius: 3px;
+}
+
+.card-item {
   position: absolute;
   width: $card-width;
   height: $card-height;
   border: 1px solid $gray-light;
   border-radius: 3px;
-  background-color: $gray-lighter;
+  background-color: pink;
 }

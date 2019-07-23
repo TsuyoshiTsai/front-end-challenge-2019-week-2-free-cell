@@ -1,3 +1,5 @@
+import uuidv4 from 'uuid/v4'
+
 class IPile {
   cards // Card[]
   addCards // Function
@@ -10,6 +12,7 @@ export class ColumnPile extends IPile {
   constructor (cards) {
     super()
 
+    this.id = uuidv4()
     this.cards = cards || []
     this.setLastCard()
   }
@@ -43,6 +46,7 @@ export class ParkingPile extends IPile {
   constructor () {
     super()
 
+    this.id = uuidv4()
     this.cards = []
   }
 
@@ -61,6 +65,7 @@ export class FundationPile extends IPile {
   constructor () {
     super()
 
+    this.id = uuidv4()
     this.cards = []
   }
 

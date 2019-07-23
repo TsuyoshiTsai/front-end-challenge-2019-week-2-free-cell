@@ -6,7 +6,7 @@ export class CommandManager {
     this.history = []
   }
 
-  fixHistoryToLimitation () {
+  fitHistoryToLimitation () {
     this.history = this.history.slice(-this.LIMITATION)
   }
 
@@ -14,11 +14,11 @@ export class CommandManager {
     command.do()
 
     this.history = [...this.history, command]
-    this.fixHistoryToLimitation()
+    this.fitHistoryToLimitation()
   }
 
   unexecute () {
-    const lastCommand = this.history.slice(-1)[0]
+    const [lastCommand] = this.history.slice(-1)
     lastCommand.undo()
 
     this.history = this.history.slice(0, this.history.length - 1)
