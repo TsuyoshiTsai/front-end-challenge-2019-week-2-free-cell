@@ -27,7 +27,7 @@ export class Game {
     })
 
     this.parkingPiles = new Array(4).fill(0).map(() => new ParkingPile())
-    this.fundationPiles = new Array(4).fill(0).map(() => new FundationPile())
+    this.fundationPiles = Object.values(CardSuit).map(suit => new FundationPile(suit))
 
     // invoker
     this.commandManager = new CommandManager()

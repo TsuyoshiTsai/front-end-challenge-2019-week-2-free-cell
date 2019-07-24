@@ -65,11 +65,13 @@ export class ParkingPile extends IPile {
 
 export class FundationPile extends IPile {
   cards // Card[]
+  suit // CardSuit
 
-  constructor () {
+  constructor (suit) {
     super()
 
     this.id = uuidv4()
+    this.suit = suit
     this.cards = []
   }
 

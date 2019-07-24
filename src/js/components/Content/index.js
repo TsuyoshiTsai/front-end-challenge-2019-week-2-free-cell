@@ -19,15 +19,11 @@ function Content (props) {
   console.log('gameRef :', gameRef)
 
   const onDragEnd = useCallback(({ destination, source }) => {
-    //  draggableId: "club6",
-    console.log('destination, source :', destination, source)
-    // : {index: 6, droppableId: "37850e15-035f-45ab-aabd-b6a4a652bca1"}
     if (destination === null) return
 
     const [from] = gameRef.current.columnPiles.filter(pile => pile.id === source.droppableId)
     const [to] = gameRef.current.columnPiles.filter(pile => pile.id === destination.droppableId)
     const size = from.cards.length - source.index
-    console.log('from.cards :', from.cards[source.index].color)
 
     gameRef.current.move(from, to, size)
   }, [])
@@ -37,11 +33,11 @@ function Content (props) {
       <div className={cx('content')}>
         <div className={cx('stack-container')}>
           <div className={cx('pile-list')}>
-            {gameRef.current.parkingPiles.map((parkingPile, index) => (
+            {gameRef.current.parkingPiles.map((pile, index) => (
               <div key={index} className={cx('card-list')}>
-                <div className={cx('card-slot')}>{index}</div>
+                <div className={cx('card', 'card--slot')} />
 
-                {parkingPile.cards.map((card, index) => (
+                {pile.cards.map((card, index) => (
                   <div key={index} className={cx('card-item')}>
                     {card.rank} {card.suit}
                   </div>
@@ -50,14 +46,19 @@ function Content (props) {
             ))}
           </div>
 
-          <div className={cx('king')}>king</div>
+          <div className={cx('brand')}>
+            <img className={cx('brand__image')} src={require(`../../../assets/images/king/happy.png`)} alt='FREECELL' />
+            <div className={cx('brand__text')}>FREECELL</div>
+          </div>
 
           <div className={cx('pile-list')}>
-            {gameRef.current.fundationPiles.map((fundationPile, index) => (
+            {gameRef.current.fundationPiles.map((pile, index) => (
               <div key={index} className={cx('card-list')}>
-                <div className={cx('card-slot')}>{index}</div>
+                <div className={cx('card', 'card--fundation')}>
+                  <img src={require(`../../../assets/images/cards/${pile.suit.description}.png`)} alt={pile.suit.description} />
+                </div>
 
-                {fundationPile.cards.map((card, index) => (
+                {pile.cards.map((card, index) => (
                   <div key={index} className={cx('card-item')}>
                     {card.rank} {card.suit}
                   </div>
@@ -68,8 +69,8 @@ function Content (props) {
         </div>
 
         <div className={cx('pile-list')}>
-          {gameRef.current.columnPiles.map((columnPile, index) => (
-            <Droppable key={index} droppableId={columnPile.id} type='a'>
+          {gameRef.current.columnPiles.map((pile, index) => (
+            <Droppable key={index} droppableId={pile.id} type='a'>
               {(provided, snapshot) => {
                 // console.log('snapshot :', snapshot)
                 return (
@@ -81,9 +82,9 @@ function Content (props) {
                       background: snapshot.isDraggingOver ? 'yellow' : Boolean(snapshot.draggingFromThisWith) && 'yellowgreen',
                     }}
                   >
-                    <div className={cx('card-slot')}>{index}</div>
+                    <div className={cx('card', 'card--slot')} />
 
-                    {columnPile.cards.map((card, index) => {
+                    {pile.cards.map((card, index) => {
                       const rankWithSuit = `${card.suit.description}${card.rank}`
                       // console.log('provided.draggableProps :', provided)
 
@@ -103,7 +104,7 @@ function Content (props) {
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                                 ref={provided.innerRef}
-                                className={cx('card-item')}
+                                className={cx('card', 'card--suit')}
                                 style={{ top: 25 * index, ...provided.draggableProps.style }}
                                 src={require(`../../../assets/images/cards/${rankWithSuit}.png`)}
                                 alt={rankWithSuit}
