@@ -12,27 +12,6 @@
   justify-content: space-between;
 }
 
-.brand {
-  flex-shrink: 0;
-  margin: 0 23px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  &__image {
-    @include size(60px);
-  }
-
-  &__text {
-    margin-top: 3px;
-    line-height: 1.25;
-    letter-spacing: 0.1em;
-    font-size: $font-size-sm;
-    font-weight: 700;
-  }
-}
-
 .pile-list {
   display: flex;
   justify-content: space-between;

@@ -1,0 +1,43 @@
+$line-height: 20px;
+
+// ---
+// colors
+$colors: (
+  inherit: inherit,
+  primary-light: $color-primary-light,
+  primary: $color-primary,
+  primary-dark: $color-primary-dark,
+  white: $gray-white,
+  gray-lightest: $gray-lightest,
+  gray-lighter: $gray-lighter,
+  gray-light: $gray-light,
+  gray: $gray,
+  gray-dark: $gray-dark,
+  gray-darker: $gray-darker,
+  gray-darkest: $gray-darkest
+);
+
+.typography-text {
+  align-items: center;
+  line-height: $line-height;
+
+  &__content {
+    overflow: hidden;
+    width: 100%;
+    align-self: center;
+  }
+
+  &__affix {
+    flex-shrink: 0;
+    display: inline-flex;
+    justify-content: center;
+    align-content: center;
+    color: currentColor;
+
+    @each $name, $color in $colors {
+      &[data-color="#{$name}"] {
+        color: $color;
+      }
+    }
+  }
+}

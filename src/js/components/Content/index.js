@@ -3,6 +3,10 @@ import React, { useRef, useCallback } from 'react'
 import classnames from 'classnames/bind'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
+// Components
+import Brand from '../Brand'
+import Typography from '../Typography'
+
 // Models
 import { Game } from '../../lib/models'
 
@@ -46,10 +50,12 @@ function Content (props) {
             ))}
           </div>
 
-          <div className={cx('brand')}>
-            <img className={cx('brand__image')} src={require(`../../../assets/images/king/happy.png`)} alt='FREECELL' />
-            <div className={cx('brand__text')}>FREECELL</div>
-          </div>
+          <Brand>
+            <Brand.Image type='happy' />
+            <Typography.Text size='sm' fontWeight={700} marginTop={3}>
+              FREECELL
+            </Typography.Text>
+          </Brand>
 
           <div className={cx('pile-list')}>
             {gameRef.current.fundationPiles.map((pile, index) => (

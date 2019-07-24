@@ -1,2 +1,5 @@
-.footer {
+.action-list {
+  > [role="button"]:not(:first-of-type) {
+    margin-left: 15px;
+  }
 }
