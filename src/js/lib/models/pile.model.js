@@ -14,29 +14,33 @@ export class ColumnPile extends IPile {
 
     this.id = uuidv4()
     this.cards = cards || []
-    this.setLastCard()
+    this.updateMovableCard()
   }
 
-  setLastCard () {
-    this.cards = this.cards.map((card, index) => {
-      if (index === this.cards.length - 1) {
-        card.isLast = true
+  updateMovableCard () {
+    this.cards = this.cards.reduce((cards, card, index, array) => {
+      if (index === array.length - 1) {
+        // 最後一張的情況
+        card.isMovable = true
       } else {
-        card.isLast = false
+        // 超過一張，且不是最後一張的情況
+        const nextCard = array[index + 1]
+
+        card.isMovable = card.color !== nextCard.color && card.rank - 1 === nextCard.rank
       }
 
-      return card
-    })
+      return [...cards, card]
+    }, [])
   }
 
   addCards (cards) {
     this.cards = [...this.cards, ...cards]
-    this.setLastCard()
+    this.updateMovableCard()
   }
 
   removeCards (size) {
     this.cards = this.cards.slice(0, -size)
-    this.setLastCard()
+    this.updateMovableCard()
   }
 }
 
@@ -51,7 +55,7 @@ export class ParkingPile extends IPile {
   }
 
   addCards (cards) {
-    this.cards = [cards]
+    this.cards = [...cards]
   }
 
   removeCards () {

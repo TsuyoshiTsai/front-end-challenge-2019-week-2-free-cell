@@ -11,6 +11,7 @@ $card-border-radius: 5px;
 .stack-container {
   margin-top: 35px;
   margin-bottom: 30px;
+  flex-shrink: 0;
   display: flex;
   justify-content: space-between;
 }
@@ -25,6 +26,7 @@ $card-border-radius: 5px;
   display: flex;
   justify-content: space-between;
   width: 100%;
+  height: 100%;
 }
 
 .card-list {
