@@ -1,5 +1,5 @@
-import React, { useRef, useCallback } from 'react'
-// import PropTypes from 'prop-types'
+import React, { useCallback } from 'react'
+import PropTypes from 'prop-types'
 import classnames from 'classnames/bind'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
@@ -7,37 +7,40 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import Brand from '../Brand'
 import Typography from '../Typography'
 
-// Models
-import { Game } from '../../lib/models'
-
 // Style
 import styles from './style.module.scss'
 
 // Variables / Functions
 const cx = classnames.bind(styles)
 
-export const propTypes = {}
+export const propTypes = {
+  game: PropTypes.object,
+  forceUpdate: PropTypes.func,
+}
 
 function Content (props) {
-  const gameRef = useRef(new Game())
-  console.log('gameRef :', gameRef)
+  const { game, forceUpdate } = props
 
-  const onDragEnd = useCallback(({ destination, source }) => {
-    if (destination === null) return
+  const onDragEnd = useCallback(
+    ({ destination, source }) => {
+      if (destination === null) return
 
-    const [from] = gameRef.current.columnPiles.filter(pile => pile.id === source.droppableId)
-    const [to] = gameRef.current.columnPiles.filter(pile => pile.id === destination.droppableId)
-    const size = from.cards.length - source.index
+      const [from] = game.columnPiles.filter(pile => pile.id === source.droppableId)
+      const [to] = game.columnPiles.filter(pile => pile.id === destination.droppableId)
+      const size = from.cards.length - source.index
 
-    gameRef.current.move(from, to, size)
-  }, [])
+      game.move(from, to, size)
+      forceUpdate()
+    },
+    [forceUpdate, game]
+  )
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className={cx('content')}>
         <div className={cx('stack-container')}>
           <div className={cx('pile-list')}>
-            {gameRef.current.parkingPiles.map((pile, index) => (
+            {game.parkingPiles.map((pile, index) => (
               <div key={index} className={cx('card-list')}>
                 <div className={cx('card', 'card--slot')} />
 
@@ -58,7 +61,7 @@ function Content (props) {
           </Brand>
 
           <div className={cx('pile-list')}>
-            {gameRef.current.fundationPiles.map((pile, index) => (
+            {game.fundationPiles.map((pile, index) => (
               <div key={index} className={cx('card-list')}>
                 <div className={cx('card', 'card--fundation')}>
                   <img src={require(`../../../assets/images/cards/${pile.suit.description}.png`)} alt={pile.suit.description} />
@@ -75,7 +78,7 @@ function Content (props) {
         </div>
 
         <div className={cx('pile-list')}>
-          {gameRef.current.columnPiles.map((pile, index) => (
+          {game.columnPiles.map((pile, index) => (
             <Droppable key={index} droppableId={pile.id} type='a'>
               {(provided, snapshot) => {
                 // console.log('snapshot :', snapshot)

@@ -19,6 +19,7 @@ export class CommandManager {
 
   unexecute () {
     const [lastCommand] = this.history.slice(-1)
+    console.log('lastCommand :', lastCommand)
     lastCommand.undo()
 
     this.history = this.history.slice(0, this.history.length - 1)

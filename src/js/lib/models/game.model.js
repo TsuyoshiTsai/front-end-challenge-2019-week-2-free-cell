@@ -1,6 +1,7 @@
 import flow from 'lodash/fp/flow'
 import shuffle from 'lodash/fp/shuffle'
 import flatMap from 'lodash/fp/flatMap'
+import cloneDeep from 'lodash/cloneDeep'
 import { ColumnPile, ParkingPile, FundationPile } from './pile.model'
 import { Card, CardSuit } from './card.model'
 import { MoveCommand } from './command.model'
@@ -9,6 +10,10 @@ import { CommandManager } from './command-manager.model'
 // client
 export class Game {
   columnPiles // IPile[]
+  initialColumnPiles // IPile[] // for restart
+  parkingPiles // IPile[]
+  fundationPiles // IPile[]
+  commandManager // CommandManager
 
   constructor () {
     const cards = flow(
@@ -25,6 +30,7 @@ export class Game {
 
       return new ColumnPile(cards.slice(from, to))
     })
+    this.initialColumnPiles = cloneDeep(this.columnPiles)
 
     this.parkingPiles = new Array(4).fill(0).map(() => new ParkingPile())
     this.fundationPiles = Object.values(CardSuit).map(suit => new FundationPile(suit))
@@ -48,6 +54,8 @@ export class Game {
   }
 
   undo () {
+    console.log('undo')
+
     this.commandManager.unexecute()
   }
 }

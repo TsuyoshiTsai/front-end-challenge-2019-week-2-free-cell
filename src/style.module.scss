@@ -22,7 +22,11 @@
     border-top: 1px solid $gray-light;
   }
 
-  &__action-list-wrapper {
+  &__action-list {
     margin-left: auto;
+
+    > [role="button"]:not(:first-of-type) {
+      margin-left: 15px;
+    }
   }
 }
