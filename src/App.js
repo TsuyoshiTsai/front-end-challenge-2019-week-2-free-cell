@@ -29,7 +29,7 @@ function App (props) {
 
   const onGiveUp = event => null
   const onHint = event => null
-  const onRestart = event => null
+  const onRestart = event => setGame({ ...game.reset() })
   const onUndo = event => setGame({ ...game.undo() })
 
   return (
@@ -48,13 +48,13 @@ function App (props) {
             <Button type='primary' shape='rounded' size='sm' width={120} onClick={event => setIsGiveUpModalOpened(true)}>
               NEW GAME
             </Button>
-            <Button type='primary' shape='rounded' size='sm' width={120} onClick={onRestart}>
+            <Button type='primary' shape='rounded' size='sm' width={120} onClick={onRestart} disabled={!game.canReset()}>
               RESTART
             </Button>
             <Button type='primary' shape='rounded' size='sm' width={120} onClick={onHint}>
               HINT
             </Button>
-            <Button type='primary' shape='rounded' size='sm' width={120} disabled={!game.canUndo()} onClick={onUndo}>
+            <Button type='primary' shape='rounded' size='sm' width={120} onClick={onUndo} disabled={!game.canUndo()}>
               UNDO
             </Button>
           </div>

@@ -36,11 +36,11 @@ function Pile (props) {
 
   const isActive = isOver && canDrop
 
-  let backgroundColor = '#222'
+  let backgroundColor = 'transparent'
   if (isActive) {
-    backgroundColor = 'darkgreen'
+    backgroundColor = 'yellowgreen'
   } else if (canDrop) {
-    backgroundColor = 'darkkhaki'
+    backgroundColor = 'darkgreen'
   }
 
   return (

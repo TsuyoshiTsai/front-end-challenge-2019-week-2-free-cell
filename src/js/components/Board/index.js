@@ -27,40 +27,30 @@ export const propTypes = {
 function Board (props) {
   const { game, setGame } = props
 
-  // const onDragEnd = useCallback(
-  //   ({ destination, source }) => {
-  //     if (destination === null) return
-
-  //     const [from] = game.columnPiles.filter(pile => pile.id === source.droppableId)
-  //     const [to] = game.columnPiles.filter(pile => pile.id === destination.droppableId)
-  //     const size = from.cards.length - source.index
-
-  //     setGame({ ...game.move(from, to, size) })
-  //   },
-  //   [game, setGame]
-  // )
-  const handleDrop = ({ card, from }, monitor, to) => {
-    const size = from.cards.length - from.cards.indexOf(card)
-
-    setGame({ ...game.move(from, to, size) })
-  }
+  const handleDrop = ({ card, from }, monitor, to) => setGame({ ...game.move(from, to, from.cards.length - from.cards.indexOf(card)) })
+  const handleCanDrop = ({ card, from }, to) => to.canDrop(from.cards.slice(from.cards.indexOf(card)))
 
   return (
     <DndProvider backend={HTML5Backend}>
       <div className={cx('board')}>
         <div className={cx('stack-container')}>
           <div className={cx('pile-list')}>
-            {game.parkingPiles.map((pile, index) => (
-              <div key={index} className={cx('card-list')}>
-                <div className={cx('card', 'card--slot')} />
+            {game.parkingPiles.map((pile, index) => {
+              return (
+                <Pile
+                  key={index}
+                  accept={TYPE.CARD}
+                  onDrop={(item, monitor) => handleDrop(item, monitor, pile)}
+                  handleCanDrop={item => handleCanDrop(item, pile)}
+                >
+                  <Card.Slot />
 
-                {pile.cards.map((card, index) => (
-                  <div key={index} className={cx('card-item')}>
-                    {card.rank} {card.suit}
-                  </div>
-                ))}
-              </div>
-            ))}
+                  {pile.cards.map((card, index) => (
+                    <Card.Suit key={index} type={TYPE.CARD} pile={pile} card={card} canDrag={pile.canMove(card)} />
+                  ))}
+                </Pile>
+              )
+            })}
           </div>
 
           <Brand>
@@ -71,19 +61,22 @@ function Board (props) {
           </Brand>
 
           <div className={cx('pile-list')}>
-            {game.fundationPiles.map((pile, index) => (
-              <div key={index} className={cx('card-list')}>
-                <div className={cx('card', 'card--fundation')}>
-                  <img src={require(`../../../assets/images/cards/${pile.suit.description}.png`)} alt={pile.suit.description} />
-                </div>
+            {game.fundationPiles.map((pile, index) => {
+              return (
+                <Pile
+                  key={index}
+                  accept={TYPE.CARD}
+                  onDrop={(item, monitor) => handleDrop(item, monitor, pile)}
+                  handleCanDrop={item => handleCanDrop(item, pile)}
+                >
+                  <Card.Fundation suit={pile.suit} />
 
-                {pile.cards.map((card, index) => (
-                  <div key={index} className={cx('card-item')}>
-                    {card.rank} {card.suit}
-                  </div>
-                ))}
-              </div>
-            ))}
+                  {pile.cards.map((card, index) => (
+                    <Card.Suit key={index} type={TYPE.CARD} pile={pile} card={card} canDrag={pile.canMove(card)} />
+                  ))}
+                </Pile>
+              )
+            })}
           </div>
         </div>
 
@@ -94,12 +87,12 @@ function Board (props) {
                 key={index}
                 accept={TYPE.CARD}
                 onDrop={(item, monitor) => handleDrop(item, monitor, pile)}
-                handleCanDrop={item => pile.canDrop(item.card)}
+                handleCanDrop={item => handleCanDrop(item, pile)}
               >
-                <div className={cx('card', 'card--slot')} />
+                <Card.Slot />
 
                 {pile.cards.map((card, index) => (
-                  <Card key={index} type={TYPE.CARD} pile={pile} card={card} style={{ top: 25 * index }} canDrag={pile.canMove(card)} />
+                  <Card.Suit key={index} type={TYPE.CARD} pile={pile} card={card} style={{ top: 25 * index }} canDrag={pile.canMove(card)} />
                 ))}
               </Pile>
             )

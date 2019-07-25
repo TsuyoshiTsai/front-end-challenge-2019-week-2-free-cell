@@ -2,6 +2,7 @@ import flow from 'lodash/fp/flow'
 import shuffle from 'lodash/fp/shuffle'
 import flatMap from 'lodash/fp/flatMap'
 import cloneDeep from 'lodash/cloneDeep'
+import isEqual from 'lodash/isEqual'
 import { ColumnPile, ParkingPile, FundationPile } from './pile.model'
 import { Card, CardSuit } from './card.model'
 import { MoveCommand } from './command.model'
@@ -29,7 +30,6 @@ export class Game {
 
       return new ColumnPile(cards.slice(from, to))
     })
-
     this.parkingPiles = new Array(4).fill(0).map(() => new ParkingPile())
     this.fundationPiles = Object.values(CardSuit).map(suit => new FundationPile(suit))
 
@@ -45,9 +45,17 @@ export class Game {
   }
 
   get data () {
-    const { columnPiles, parkingPiles, fundationPiles, commandManager, reset, canUndo, move, undo } = this
+    const { columnPiles, parkingPiles, fundationPiles, commandManager, initialData, canReset, canUndo, reset, move, undo } = this
 
-    return { columnPiles, parkingPiles, fundationPiles, commandManager, reset, canUndo, move, undo }
+    return { columnPiles, parkingPiles, fundationPiles, commandManager, initialData, canReset, canUndo, reset, move, undo }
+  }
+
+  canReset () {
+    return !isEqual(this.columnPiles, this.initialData.columnPiles)
+  }
+
+  canUndo () {
+    return this.commandManager.history.length > 0
   }
 
   reset () {
@@ -55,10 +63,8 @@ export class Game {
     this.parkingPiles = cloneDeep(this.initialData.parkingPiles)
     this.fundationPiles = cloneDeep(this.initialData.fundationPiles)
     this.commandManager = cloneDeep(this.initialData.commandManager)
-  }
 
-  canUndo () {
-    return this.commandManager.history.length > 0
+    return this
   }
 
   move (from, to, size) {

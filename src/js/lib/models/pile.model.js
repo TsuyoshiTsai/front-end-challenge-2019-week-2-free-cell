@@ -40,13 +40,13 @@ export class ColumnPile extends IPile {
       const nextCard = this.cards[index + 1]
       const nextCardMovable = result[index + 1]
 
-      result[index] = nextCardMovable && this.isMovable(card, nextCard)
+      result[index] = nextCardMovable && this.isDroppable(card, nextCard)
     }
 
     this.movables = result
   }
 
-  isMovable (card, nextCard) {
+  isDroppable (card, nextCard) {
     return card.color !== nextCard.color && card.rank - 1 === nextCard.rank
   }
 
@@ -54,10 +54,11 @@ export class ColumnPile extends IPile {
     return this.movables[this.cards.indexOf(card)]
   }
 
-  canDrop (card) {
+  canDrop (cards) {
     const [lastCard] = this.cards.slice(-1)
+    const [firstCard] = cards
 
-    return this.isMovable(lastCard, card)
+    return this.isDroppable(lastCard, firstCard)
   }
 
   addCards (cards) {
@@ -85,7 +86,9 @@ export class ParkingPile extends IPile {
     return this.cards.indexOf(card) > -1
   }
 
-  canDrop (cards) {}
+  canDrop (cards) {
+    return this.cards.length === 0 && cards.length === 1
+  }
 }
 
 export class FundationPile extends IPile {
@@ -100,9 +103,23 @@ export class FundationPile extends IPile {
     this.cards = []
   }
 
+  isDroppable (card, nextCard) {
+    return card.suit === nextCard.suit && card.rank + 1 === nextCard.rank
+  }
+
   canMove (card) {
     return this.cards.indexOf(card) === this.cards.length - 1
   }
 
-  canDrop (cards) {}
+  canDrop (cards) {
+    const [card] = cards
+
+    if (card.suit !== this.suit) return false
+    if (this.cards.length === 0 && card.rank !== 1) return false
+    if (this.cards.length === 0 && card.rank === 1) return true
+
+    const [lastCard] = this.cards.slice(-1)
+
+    return this.isDroppable(lastCard, card)
+  }
 }
