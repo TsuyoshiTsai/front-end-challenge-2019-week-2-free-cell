@@ -6,18 +6,16 @@ export const CardColor = Enum('red', 'black')
 export class Card {
   rank // number
   suit // CardSuit
-  isMovable // boolean
 
   constructor (rank, suit) {
     this.rank = rank || 1
     this.suit = suit || CardSuit.spade
-    this.isMovable = false
   }
 
   get data () {
-    const { rank, suit, isMovable } = this
+    const { rank, suit } = this
 
-    return { rank, suit, isMovable }
+    return { rank, suit }
   }
 
   get color () {

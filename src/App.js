@@ -7,7 +7,7 @@ import classnames from 'classnames/bind'
 // Components
 import GiveUpModal from './js/components/GiveUpModal'
 import Button from './js/components/Button'
-import Content from './js/components/Content'
+import Board from './js/components/Board'
 import Rule from './js/components/Rule'
 import Status from './js/components/Status'
 
@@ -38,7 +38,7 @@ function App (props) {
 
       <main className={cx('app__main')}>
         <section className={cx('app__content')}>
-          <Content game={game} setGame={setGame} />
+          <Board game={game} setGame={setGame} />
         </section>
         <footer className={cx('app__footer')}>
           <Rule />

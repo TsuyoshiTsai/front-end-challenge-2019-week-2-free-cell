@@ -1,0 +1,12 @@
+.card {
+  position: absolute;
+  width: 95px;
+  height: 145px;
+  border-radius: 5px;
+  border: 1px solid $gray-lighter;
+  background-color: $gray-white;
+
+  > img {
+    @include size(100%);
+  }
+}

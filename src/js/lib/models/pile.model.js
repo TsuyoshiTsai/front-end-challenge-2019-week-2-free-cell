@@ -4,43 +4,70 @@ class IPile {
   cards // Card[]
   addCards // Function
   removeCards // Function
+
+  constructor () {
+    this.cards = []
+  }
+
+  addCards (cards) {
+    this.cards = [...this.cards, ...cards]
+  }
+
+  removeCards (size) {
+    this.cards = this.cards.slice(0, -size)
+  }
 }
 
 export class ColumnPile extends IPile {
   cards // Card[]
+  movables // bool[]
 
   constructor (cards) {
     super()
 
     this.id = uuidv4()
     this.cards = cards || []
-    this.updateMovableCard()
+    this.movables = []
+    this.updateMovable()
   }
 
-  updateMovableCard () {
-    this.cards = this.cards.reduce((cards, card, index, array) => {
-      if (index === array.length - 1) {
-        // 最後一張的情況
-        card.isMovable = true
-      } else {
-        // 超過一張，且不是最後一張的情況
-        const nextCard = array[index + 1]
+  updateMovable () {
+    const result = new Array(this.cards.length).fill(0).map(() => true)
 
-        card.isMovable = card.color !== nextCard.color && card.rank - 1 === nextCard.rank
-      }
+    // 從倒數第二張開始
+    for (let index = this.cards.length - 2; index >= 0; index--) {
+      const card = this.cards[index]
+      const nextCard = this.cards[index + 1]
+      const nextCardMovable = result[index + 1]
 
-      return [...cards, card]
-    }, [])
+      result[index] = nextCardMovable && this.isMovable(card, nextCard)
+    }
+
+    this.movables = result
+  }
+
+  isMovable (card, nextCard) {
+    return card.color !== nextCard.color && card.rank - 1 === nextCard.rank
+  }
+
+  canMove (card) {
+    return this.movables[this.cards.indexOf(card)]
+  }
+
+  canDrop (card) {
+    const [lastCard] = this.cards.slice(-1)
+
+    return this.isMovable(lastCard, card)
   }
 
   addCards (cards) {
-    this.cards = [...this.cards, ...cards]
-    this.updateMovableCard()
+    super.addCards(cards)
+    this.updateMovable()
   }
 
   removeCards (size) {
-    this.cards = this.cards.slice(0, -size)
-    this.updateMovableCard()
+    super.removeCards(size)
+    this.updateMovable()
   }
 }
 
@@ -54,13 +81,11 @@ export class ParkingPile extends IPile {
     this.cards = []
   }
 
-  addCards (cards) {
-    this.cards = [...cards]
+  canMove (card) {
+    return this.cards.indexOf(card) > -1
   }
 
-  removeCards () {
-    this.card = []
-  }
+  canDrop (cards) {}
 }
 
 export class FundationPile extends IPile {
@@ -75,10 +100,9 @@ export class FundationPile extends IPile {
     this.cards = []
   }
 
-  addCards (cards) {
-    this.cards = [...this.cards, ...cards]
+  canMove (card) {
+    return this.cards.indexOf(card) === this.cards.length - 1
   }
 
-  // can't remove cards
-  removeCards () {}
+  canDrop (cards) {}
 }
