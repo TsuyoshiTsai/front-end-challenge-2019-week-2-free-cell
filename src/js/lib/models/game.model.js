@@ -10,7 +10,6 @@ import { CommandManager } from './command-manager.model'
 // client
 export class Game {
   columnPiles // IPile[]
-  initialColumnPiles // IPile[] // for restart
   parkingPiles // IPile[]
   fundationPiles // IPile[]
   commandManager // CommandManager
@@ -30,32 +29,47 @@ export class Game {
 
       return new ColumnPile(cards.slice(from, to))
     })
-    this.initialColumnPiles = cloneDeep(this.columnPiles)
 
     this.parkingPiles = new Array(4).fill(0).map(() => new ParkingPile())
     this.fundationPiles = Object.values(CardSuit).map(suit => new FundationPile(suit))
 
     // invoker
     this.commandManager = new CommandManager()
+
+    this.initialData = {
+      columnPiles: cloneDeep(this.columnPiles),
+      parkingPiles: cloneDeep(this.parkingPiles),
+      fundationPiles: cloneDeep(this.fundationPiles),
+      commandManager: cloneDeep(this.commandManager),
+    }
   }
 
   get data () {
-    const { columnPiles, parkingPiles, fundationPiles, commandManager } = this
+    const { columnPiles, parkingPiles, fundationPiles, commandManager, reset, canUndo, move, undo } = this
 
-    return { columnPiles, parkingPiles, fundationPiles, commandManager }
+    return { columnPiles, parkingPiles, fundationPiles, commandManager, reset, canUndo, move, undo }
   }
 
-  get canUndo () {
+  reset () {
+    this.columnPiles = cloneDeep(this.initialData.columnPiles)
+    this.parkingPiles = cloneDeep(this.initialData.parkingPiles)
+    this.fundationPiles = cloneDeep(this.initialData.fundationPiles)
+    this.commandManager = cloneDeep(this.initialData.commandManager)
+  }
+
+  canUndo () {
     return this.commandManager.history.length > 0
   }
 
   move (from, to, size) {
     this.commandManager.execute(new MoveCommand(from, to, size))
+
+    return this
   }
 
   undo () {
-    console.log('undo')
-
     this.commandManager.unexecute()
+
+    return this
   }
 }

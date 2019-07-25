@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { hot } from 'react-hot-loader'
 import { withRouter } from 'react-router-dom'
 // import PropTypes from 'prop-types'
@@ -24,14 +24,13 @@ export const propTypes = {}
 
 function App (props) {
   const [isGiveUpModalOpened, setIsGiveUpModalOpened] = useState(false)
-  const [, forceUpdate] = useState()
-  const gameRef = useRef(new Game())
-  console.log('gameRef :', gameRef)
+  const [game, setGame] = useState(new Game().data)
+  console.log('game :', game)
 
   const onGiveUp = event => null
   const onHint = event => null
   const onRestart = event => null
-  const onUndo = event => gameRef.current.undo()
+  const onUndo = event => setGame({ ...game.undo() })
 
   return (
     <div className={cx('app')}>
@@ -39,7 +38,7 @@ function App (props) {
 
       <main className={cx('app__main')}>
         <section className={cx('app__content')}>
-          <Content game={gameRef.current} forceUpdate={forceUpdate} />
+          <Content game={game} setGame={setGame} />
         </section>
         <footer className={cx('app__footer')}>
           <Rule />
@@ -55,7 +54,7 @@ function App (props) {
             <Button type='primary' shape='rounded' size='sm' width={120} onClick={onHint}>
               HINT
             </Button>
-            <Button type='primary' shape='rounded' size='sm' width={120} disabled={!gameRef.current.canUndo} onClick={onUndo}>
+            <Button type='primary' shape='rounded' size='sm' width={120} disabled={!game.canUndo()} onClick={onUndo}>
               UNDO
             </Button>
           </div>
