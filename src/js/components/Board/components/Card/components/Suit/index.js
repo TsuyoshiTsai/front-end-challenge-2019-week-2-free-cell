@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames/bind'
-import { useDrag } from 'react-dnd'
 
 // Components
 import Card from '../Card'
@@ -13,44 +12,30 @@ import styles from './style.module.scss'
 const cx = classnames.bind(styles)
 
 export const propTypes = {
-  type: PropTypes.string,
-  pile: PropTypes.shape({
-    id: PropTypes.string,
-    cards: PropTypes.array,
-  }),
   card: PropTypes.shape({
-    rank: PropTypes.number,
-    suit: PropTypes.symbol,
+    imagePath: PropTypes.string,
   }),
-  canDrag: PropTypes.bool,
   style: PropTypes.object,
+  className: PropTypes.string,
+  forwardRef: PropTypes.any,
 }
 
 function Suit (props) {
-  const { type, pile, card, canDrag, style } = props
-
-  const rankWithSuit = `${card.suit.description}${card.rank}`
-
-  const [{ opacity }, drag] = useDrag({
-    item: { type, from: pile, card },
-    collect: monitor => ({
-      opacity: monitor.isDragging() ? 0.5 : 1,
-    }),
-    canDrag: monitor => canDrag,
-  })
+  const { card, style, className, forwardRef, ...restProps } = props
 
   return (
     <Card
-      className={cx('card-suit')}
       elementType='img'
-      ref={drag}
-      src={require(`../../../../../../../assets/images/cards/${rankWithSuit}.png`)}
-      alt={rankWithSuit}
-      style={{ ...style, cursor: canDrag ? 'pointer' : 'default', background: canDrag ? 'pink' : 'yellowgreen', opacity }}
+      src={require(`../../../../../../../assets/images/cards/${card.imagePath}.png`)}
+      alt={card.imagePath}
+      style={style}
+      className={cx('card-suit', className)}
+      ref={forwardRef}
+      {...restProps}
     />
   )
 }
 
 Suit.propTypes = propTypes
 
-export default Suit
+export default React.forwardRef((props, ref) => <Suit forwardRef={ref} {...props} />)

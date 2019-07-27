@@ -27,7 +27,10 @@ function App (props) {
   const [game, setGame] = useState(new Game().data)
   console.log('game :', game)
 
-  const onGiveUp = event => null
+  const onGiveUp = event => {
+    setIsGiveUpModalOpened(false)
+    setGame({ ...new Game().data })
+  }
   const onHint = event => null
   const onRestart = event => setGame({ ...game.reset() })
   const onUndo = event => setGame({ ...game.undo() })

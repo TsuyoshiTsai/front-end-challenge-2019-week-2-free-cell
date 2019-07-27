@@ -29,4 +29,8 @@ export class Card {
         return CardColor.red
     }
   }
+
+  get imagePath () {
+    return `${this.suit.description}${this.rank}`
+  }
 }

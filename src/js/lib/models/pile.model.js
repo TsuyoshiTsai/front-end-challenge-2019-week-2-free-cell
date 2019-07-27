@@ -9,6 +9,10 @@ class IPile {
     this.cards = []
   }
 
+  getAfterCards (card) {
+    return this.cards.slice(this.cards.indexOf(card))
+  }
+
   addCards (cards) {
     this.cards = [...this.cards, ...cards]
   }

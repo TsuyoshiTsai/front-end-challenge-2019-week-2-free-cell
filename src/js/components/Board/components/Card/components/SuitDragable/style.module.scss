@@ -1,0 +1,7 @@
+.card-suit-draggable {
+  transition: opacity 200ms $transition-mode;
+
+  &[data-is-dragging="true"] ~ & {
+    opacity: 0;
+  }
+}

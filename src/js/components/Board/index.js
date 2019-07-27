@@ -9,6 +9,7 @@ import Brand from '../Brand'
 import Typography from '../Typography'
 import Pile from './components/Pile'
 import Card from './components/Card'
+import DragLayer from './components/DragLayer'
 
 // Lib MISC
 import { TYPE } from './constants'
@@ -27,11 +28,12 @@ export const propTypes = {
 function Board (props) {
   const { game, setGame } = props
 
-  const handleDrop = ({ card, from }, monitor, to) => setGame({ ...game.move(from, to, from.cards.length - from.cards.indexOf(card)) })
-  const handleCanDrop = ({ card, from }, to) => to.canDrop(from.cards.slice(from.cards.indexOf(card)))
+  const handleDrop = ({ card, from }, monitor, to) => setGame({ ...game.move(from, to, from.getAfterCards(card).length) })
+  const handleCanDrop = ({ card, from }, to) => to.canDrop(from.getAfterCards(card))
 
   return (
     <DndProvider backend={HTML5Backend}>
+      <DragLayer />
       <div className={cx('board')}>
         <div className={cx('stack-container')}>
           <div className={cx('pile-list')}>
@@ -46,7 +48,7 @@ function Board (props) {
                   <Card.Slot />
 
                   {pile.cards.map((card, index) => (
-                    <Card.Suit key={index} type={TYPE.CARD} pile={pile} card={card} canDrag={pile.canMove(card)} />
+                    <Card.SuitDragable key={index} type={TYPE.CARD} pile={pile} card={card} canDrag={pile.canMove(card)} />
                   ))}
                 </Pile>
               )
@@ -72,7 +74,7 @@ function Board (props) {
                   <Card.Fundation suit={pile.suit} />
 
                   {pile.cards.map((card, index) => (
-                    <Card.Suit key={index} type={TYPE.CARD} pile={pile} card={card} canDrag={pile.canMove(card)} />
+                    <Card.SuitDragable key={index} type={TYPE.CARD} pile={pile} card={card} canDrag={pile.canMove(card)} />
                   ))}
                 </Pile>
               )
@@ -92,7 +94,7 @@ function Board (props) {
                 <Card.Slot />
 
                 {pile.cards.map((card, index) => (
-                  <Card.Suit key={index} type={TYPE.CARD} pile={pile} card={card} style={{ top: 25 * index }} canDrag={pile.canMove(card)} />
+                  <Card.SuitDragable key={index} type={TYPE.CARD} pile={pile} card={card} style={{ top: 25 * index }} canDrag={pile.canMove(card)} />
                 ))}
               </Pile>
             )
