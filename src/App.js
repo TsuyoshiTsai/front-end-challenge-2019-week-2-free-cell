@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { hot } from 'react-hot-loader'
 import { withRouter } from 'react-router-dom'
 // import PropTypes from 'prop-types'
 import classnames from 'classnames/bind'
 
 // Components
+import FailModal from './js/components/FailModal'
 import GiveUpModal from './js/components/GiveUpModal'
 import Button from './js/components/Button'
 import Board from './js/components/Board'
@@ -24,9 +25,20 @@ export const propTypes = {}
 
 function App (props) {
   const [isGiveUpModalOpened, setIsGiveUpModalOpened] = useState(false)
+  const [isFailModalOpened, setIsFailModalOpened] = useState(false)
   const [hint, setHint] = useState(null)
   const [game, setGame] = useState(new Game().data)
   console.log('game :', game)
+  console.log('game.canMove :', game.canMove())
+  const isFinish = game.isFinish()
+  const canMove = game.canMove()
+  const isFail = !isFinish && !canMove
+
+  useEffect(() => {
+    if (isFail) {
+      setIsFailModalOpened(true)
+    }
+  }, [isFail])
 
   const onCardsMove = (from, to, size) => {
     setGame({ ...game.move(from, to, size) })
@@ -43,6 +55,13 @@ function App (props) {
   return (
     <div className={cx('app')}>
       <GiveUpModal isOpened={isGiveUpModalOpened} onClose={event => setIsGiveUpModalOpened(false)} onGiveUp={onGiveUp} />
+      <FailModal
+        isOpened={isFailModalOpened}
+        onClose={event => setIsFailModalOpened(false)}
+        onGiveUp={onGiveUp}
+        onRestart={onRestart}
+        onUndo={onUndo}
+      />
 
       <main className={cx('app__main')}>
         <section className={cx('app__content')}>

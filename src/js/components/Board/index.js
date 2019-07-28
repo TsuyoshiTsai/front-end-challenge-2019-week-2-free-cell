@@ -38,9 +38,11 @@ function Board (props) {
     const isTo = hint.to.id === pile.id
     if (!isFrom && !isTo) return null
 
-    const translateY = Math.max(pile.cards.length - (isFrom ? hint.size : isTo && 1), 0)
+    const distance = 25
+    const top = Math.max(pile.cards.length - (isFrom ? hint.size : isTo && 1), 0) * distance
+    const paddingBottom = (isFrom ? hint.size - 1 : isTo && 0) * distance
 
-    return <Card.Hint style={{ top: translateY * 25 }} />
+    return <Card.Hint style={{ boxSizing: 'content-box', top, paddingBottom }} />
   }
 
   return (
