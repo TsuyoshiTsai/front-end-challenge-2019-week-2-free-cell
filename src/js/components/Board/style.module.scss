@@ -2,19 +2,12 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-}
 
-.stack-container {
-  margin-top: 35px;
-  margin-bottom: 30px;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: space-between;
-}
-
-.pile-list {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  height: 100%;
+  &__stack-container {
+    margin-top: 35px;
+    margin-bottom: 30px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+  }
 }

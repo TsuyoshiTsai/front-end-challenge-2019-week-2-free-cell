@@ -24,14 +24,19 @@ export const propTypes = {}
 
 function App (props) {
   const [isGiveUpModalOpened, setIsGiveUpModalOpened] = useState(false)
+  const [hint, setHint] = useState(null)
   const [game, setGame] = useState(new Game().data)
   console.log('game :', game)
 
+  const onCardsMove = (from, to, size) => {
+    setGame({ ...game.move(from, to, size) })
+    setHint(null)
+  }
   const onGiveUp = event => {
     setIsGiveUpModalOpened(false)
-    setGame({ ...new Game().data })
+    setGame(new Game().data)
   }
-  const onHint = event => null
+  const onHint = event => setHint(game.getHint())
   const onRestart = event => setGame({ ...game.reset() })
   const onUndo = event => setGame({ ...game.undo() })
 
@@ -41,7 +46,7 @@ function App (props) {
 
       <main className={cx('app__main')}>
         <section className={cx('app__content')}>
-          <Board game={game} setGame={setGame} />
+          <Board game={game} hint={hint} onCardsMove={onCardsMove} />
         </section>
         <footer className={cx('app__footer')}>
           <Rule />

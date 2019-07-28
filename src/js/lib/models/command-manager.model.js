@@ -6,15 +6,10 @@ export class CommandManager {
     this.history = []
   }
 
-  fitHistoryToLimitation () {
-    this.history = this.history.slice(-this.LIMITATION)
-  }
-
   execute (command) {
     command.do()
 
-    this.history = [...this.history, command]
-    this.fitHistoryToLimitation()
+    this.history = [...this.history, command].slice(-this.LIMITATION)
   }
 
   unexecute () {

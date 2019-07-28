@@ -22,69 +22,35 @@ const cx = classnames.bind(styles)
 
 export const propTypes = {
   game: PropTypes.object,
-  setGame: PropTypes.func,
+  hint: PropTypes.object,
+  onCardsMove: PropTypes.func,
 }
 
 function Board (props) {
-  const { game, setGame } = props
+  const { game, hint, onCardsMove } = props
 
-  const handleDrop = ({ card, from }, monitor, to) => setGame({ ...game.move(from, to, from.getAfterCards(card).length) })
+  const handleDrop = ({ card, from }, monitor, to) => onCardsMove(from, to, from.getAfterCards(card).length)
   const handleCanDrop = ({ card, from }, to) => to.canDrop(from.getAfterCards(card))
+  const renderHint = pile => {
+    if (!hint) return null
+
+    const isFrom = hint.from.id === pile.id
+    const isTo = hint.to.id === pile.id
+    if (!isFrom && !isTo) return null
+
+    const translateY = Math.max(pile.cards.length - (isFrom ? hint.size : isTo && 1), 0)
+
+    return <Card.Hint style={{ top: translateY * 25 }} />
+  }
 
   return (
     <DndProvider backend={HTML5Backend}>
       <DragLayer />
+
       <div className={cx('board')}>
-        <div className={cx('stack-container')}>
-          <div className={cx('pile-list')}>
-            {game.parkingPiles.map((pile, index) => {
-              return (
-                <Pile
-                  key={index}
-                  accept={TYPE.CARD}
-                  onDrop={(item, monitor) => handleDrop(item, monitor, pile)}
-                  handleCanDrop={item => handleCanDrop(item, pile)}
-                >
-                  <Card.Slot />
-
-                  {pile.cards.map((card, index) => (
-                    <Card.SuitDragable key={index} type={TYPE.CARD} pile={pile} card={card} canDrag={pile.canMove(card)} />
-                  ))}
-                </Pile>
-              )
-            })}
-          </div>
-
-          <Brand>
-            <Brand.Image type='happy' />
-            <Typography.Text size='sm' fontWeight={700} marginTop={3}>
-              FREECELL
-            </Typography.Text>
-          </Brand>
-
-          <div className={cx('pile-list')}>
-            {game.fundationPiles.map((pile, index) => {
-              return (
-                <Pile
-                  key={index}
-                  accept={TYPE.CARD}
-                  onDrop={(item, monitor) => handleDrop(item, monitor, pile)}
-                  handleCanDrop={item => handleCanDrop(item, pile)}
-                >
-                  <Card.Fundation suit={pile.suit} />
-
-                  {pile.cards.map((card, index) => (
-                    <Card.SuitDragable key={index} type={TYPE.CARD} pile={pile} card={card} canDrag={pile.canMove(card)} />
-                  ))}
-                </Pile>
-              )
-            })}
-          </div>
-        </div>
-
-        <div className={cx('pile-list')}>
-          {game.columnPiles.map((pile, index) => {
-            return (
+        <div className={cx('board__stack-container')}>
+          <Pile.List>
+            {game.parkingPiles.map((pile, index) => (
               <Pile
                 key={index}
                 accept={TYPE.CARD}
@@ -94,12 +60,59 @@ function Board (props) {
                 <Card.Slot />
 
                 {pile.cards.map((card, index) => (
-                  <Card.SuitDragable key={index} type={TYPE.CARD} pile={pile} card={card} style={{ top: 25 * index }} canDrag={pile.canMove(card)} />
+                  <Card.SuitDragable key={index} type={TYPE.CARD} pile={pile} card={card} canDrag={pile.canMove(card)} />
                 ))}
+
+                {renderHint(pile)}
               </Pile>
-            )
-          })}
+            ))}
+          </Pile.List>
+
+          <Brand>
+            <Brand.Image type='happy' />
+            <Typography.Text size='sm' fontWeight={700} marginTop={3}>
+              FREECELL
+            </Typography.Text>
+          </Brand>
+
+          <Pile.List>
+            {game.fundationPiles.map((pile, index) => (
+              <Pile
+                key={index}
+                accept={TYPE.CARD}
+                onDrop={(item, monitor) => handleDrop(item, monitor, pile)}
+                handleCanDrop={item => handleCanDrop(item, pile)}
+              >
+                <Card.Fundation suit={pile.suit} />
+
+                {pile.cards.map((card, index) => (
+                  <Card.SuitDragable key={index} type={TYPE.CARD} pile={pile} card={card} canDrag={pile.canMove(card)} />
+                ))}
+
+                {renderHint(pile)}
+              </Pile>
+            ))}
+          </Pile.List>
         </div>
+
+        <Pile.List>
+          {game.columnPiles.map((pile, index) => (
+            <Pile
+              key={index}
+              accept={TYPE.CARD}
+              onDrop={(item, monitor) => handleDrop(item, monitor, pile)}
+              handleCanDrop={item => handleCanDrop(item, pile)}
+            >
+              <Card.Slot />
+
+              {pile.cards.map((card, index) => (
+                <Card.SuitDragable key={index} type={TYPE.CARD} pile={pile} card={card} style={{ top: 25 * index }} canDrag={pile.canMove(card)} />
+              ))}
+
+              {renderHint(pile)}
+            </Pile>
+          ))}
+        </Pile.List>
       </div>
     </DndProvider>
   )

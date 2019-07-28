@@ -4,9 +4,7 @@ import classnames from 'classnames/bind'
 import { useDrop } from 'react-dnd'
 
 // Components
-
-// Lib MISC
-// import { TYPE } from '../../constants'
+import List from './components/List'
 
 // Style
 import styles from './style.module.scss'
@@ -51,5 +49,7 @@ function Pile (props) {
 }
 
 Pile.propTypes = propTypes
+
+Pile.List = List
 
 export default Pile

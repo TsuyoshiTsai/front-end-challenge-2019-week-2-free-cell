@@ -59,6 +59,8 @@ export class ColumnPile extends IPile {
   }
 
   canDrop (cards) {
+    if (this.cards.length === 0) return true
+
     const [lastCard] = this.cards.slice(-1)
     const [firstCard] = cards
 
@@ -116,6 +118,8 @@ export class FundationPile extends IPile {
   }
 
   canDrop (cards) {
+    if (cards.length === 0 || cards.length > 1) return false
+
     const [card] = cards
 
     if (card.suit !== this.suit) return false

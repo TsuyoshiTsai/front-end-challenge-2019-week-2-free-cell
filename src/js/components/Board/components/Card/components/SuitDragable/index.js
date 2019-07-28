@@ -41,7 +41,12 @@ function SuitDraggable (props) {
       className={cx('card-suit-draggable')}
       ref={drag}
       card={card}
-      style={{ ...style, cursor: canDrag ? 'pointer' : 'default', background: canDrag ? 'pink' : 'yellowgreen', opacity: isDragging ? 0 : null }}
+      style={{
+        ...style,
+        cursor: canDrag ? 'pointer' : 'default',
+        background: canDrag ? 'pink' : 'yellowgreen',
+        opacity: isDragging ? 0 : null,
+      }}
       data-is-dragging={isDragging}
     />
   )
