@@ -1,0 +1,15 @@
+.card-hint {
+  user-select: none;
+  pointer-events: none;
+  box-sizing: content-box;
+  z-index: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: transparent;
+  box-shadow: 0 0 0 2px $color-primary;
+
+  @at-root [data-is-dragging="true"] ~ & {
+    display: none;
+  }
+}

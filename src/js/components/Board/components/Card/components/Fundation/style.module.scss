@@ -1,0 +1,8 @@
+.card-fundation {
+  background-color: rgba($gray-lightest, 0.6);
+
+  > img {
+    @include position-centre;
+    @include size(35px);
+  }
+}

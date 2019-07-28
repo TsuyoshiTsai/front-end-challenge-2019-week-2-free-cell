@@ -1,0 +1,32 @@
+.app {
+  height: 100vh;
+  background-color: $gray-lighter;
+
+  &__main {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    max-width: 1000px;
+    height: 100%;
+  }
+
+  &__content {
+    padding: 15px;
+    height: 100%;
+    overflow: auto;
+  }
+
+  &__footer {
+    padding: 20px 0;
+    display: flex;
+    border-top: 1px solid $gray-light;
+  }
+
+  &__action-list {
+    margin-left: auto;
+
+    > [role="button"]:not(:first-of-type) {
+      margin-left: 15px;
+    }
+  }
+}
