@@ -9,23 +9,27 @@ import Typography from '../Typography'
 
 export const propTypes = {
   onGiveUp: PropTypes.func,
+  onRestart: PropTypes.func,
 }
 
 function FinishModal (props) {
-  const { onGiveUp, ...restProps } = props
+  const { onGiveUp, onRestart, ...restProps } = props
 
   return (
     <Modal {...restProps}>
       <Modal.Header>
-        <Brand.Image type='angry' />
+        <Brand.Image type='joy' />
         <Typography.Text size='xl' align='center' lineHeight={1.25} marginTop={15} isBlock>
-          CONGRATULATIONS
+          CONGRATULATIONS!
         </Typography.Text>
       </Modal.Header>
       <Modal.Body>
-        <Typography.Text letterSpacing='0.05em'>Are you sure you want to give up?</Typography.Text>
+        <Typography.Text letterSpacing='0.05em'>You win the game!</Typography.Text>
       </Modal.Body>
       <Modal.Footer>
+        <Button type='primary' size='sm' shape='rounded' width={150} onClick={onRestart}>
+          PLAY AGAIN
+        </Button>
         <Button type='primary' size='sm' shape='rounded' width={150} onClick={onGiveUp}>
           NEW GAME
         </Button>

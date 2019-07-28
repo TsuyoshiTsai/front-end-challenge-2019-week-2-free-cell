@@ -1,55 +1,8 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import classnames from 'classnames/bind'
-import { useDrop } from 'react-dnd'
-
-// Components
+import Droppable from './components/Droppable'
 import List from './components/List'
+import Pile from './components/Pile'
 
-// Style
-import styles from './style.module.scss'
-
-// Variables / Functions
-const cx = classnames.bind(styles)
-
-export const propTypes = {
-  accept: PropTypes.string,
-  onDrop: PropTypes.func,
-  handleCanDrop: PropTypes.func,
-  children: PropTypes.node,
-}
-
-function Pile (props) {
-  const { accept, onDrop, handleCanDrop, children } = props
-
-  const [{ isOver, canDrop }, drop] = useDrop({
-    accept,
-    drop: onDrop,
-    collect: monitor => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-    }),
-    canDrop: handleCanDrop,
-  })
-
-  const isActive = isOver && canDrop
-
-  let backgroundColor = 'transparent'
-  if (isActive) {
-    backgroundColor = 'yellowgreen'
-  } else if (canDrop) {
-    backgroundColor = 'darkgreen'
-  }
-
-  return (
-    <div ref={drop} className={cx('pile')} style={{ backgroundColor }}>
-      {children}
-    </div>
-  )
-}
-
-Pile.propTypes = propTypes
-
+Pile.Droppable = Droppable
 Pile.List = List
 
 export default Pile

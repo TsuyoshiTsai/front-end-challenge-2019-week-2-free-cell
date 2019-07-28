@@ -31,18 +31,22 @@ function Board (props) {
 
   const handleDrop = ({ card, from }, monitor, to) => onCardsMove(from, to, from.getAfterCards(card).length)
   const handleCanDrop = ({ card, from }, to) => to.canDrop(from.getAfterCards(card))
-  const renderHint = pile => {
+  const renderHint = (pile, shouldTranslate) => {
     if (!hint) return null
 
     const isFrom = hint.from.id === pile.id
     const isTo = hint.to.id === pile.id
     if (!isFrom && !isTo) return null
 
-    const distance = 25
-    const top = Math.max(pile.cards.length - (isFrom ? hint.size : isTo && 1), 0) * distance
-    const paddingBottom = (isFrom ? hint.size - 1 : isTo && 0) * distance
+    const styles = {}
+    if (shouldTranslate) {
+      const distance = 25
 
-    return <Card.Hint style={{ boxSizing: 'content-box', top, paddingBottom }} />
+      styles.top = Math.max(pile.cards.length - (isFrom ? hint.size : isTo && 1), 0) * distance
+      styles.paddingBottom = (isFrom ? hint.size - 1 : isTo && 0) * distance
+    }
+
+    return <Card.Hint style={styles} />
   }
 
   return (
@@ -53,7 +57,7 @@ function Board (props) {
         <div className={cx('board__stack-container')}>
           <Pile.List>
             {game.parkingPiles.map((pile, index) => (
-              <Pile
+              <Pile.Droppable
                 key={index}
                 accept={TYPE.CARD}
                 onDrop={(item, monitor) => handleDrop(item, monitor, pile)}
@@ -65,8 +69,8 @@ function Board (props) {
                   <Card.SuitDragable key={index} type={TYPE.CARD} pile={pile} card={card} canDrag={pile.canMove(card)} />
                 ))}
 
-                {renderHint(pile)}
-              </Pile>
+                {renderHint(pile, false)}
+              </Pile.Droppable>
             ))}
           </Pile.List>
 
@@ -79,7 +83,7 @@ function Board (props) {
 
           <Pile.List>
             {game.fundationPiles.map((pile, index) => (
-              <Pile
+              <Pile.Droppable
                 key={index}
                 accept={TYPE.CARD}
                 onDrop={(item, monitor) => handleDrop(item, monitor, pile)}
@@ -91,15 +95,15 @@ function Board (props) {
                   <Card.SuitDragable key={index} type={TYPE.CARD} pile={pile} card={card} canDrag={pile.canMove(card)} />
                 ))}
 
-                {renderHint(pile)}
-              </Pile>
+                {renderHint(pile, false)}
+              </Pile.Droppable>
             ))}
           </Pile.List>
         </div>
 
         <Pile.List>
           {game.columnPiles.map((pile, index) => (
-            <Pile
+            <Pile.Droppable
               key={index}
               accept={TYPE.CARD}
               onDrop={(item, monitor) => handleDrop(item, monitor, pile)}
@@ -111,8 +115,8 @@ function Board (props) {
                 <Card.SuitDragable key={index} type={TYPE.CARD} pile={pile} card={card} style={{ top: 25 * index }} canDrag={pile.canMove(card)} />
               ))}
 
-              {renderHint(pile)}
-            </Pile>
+              {renderHint(pile, true)}
+            </Pile.Droppable>
           ))}
         </Pile.List>
       </div>

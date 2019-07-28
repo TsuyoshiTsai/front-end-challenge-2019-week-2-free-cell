@@ -12,17 +12,15 @@ import styles from './style.module.scss'
 import { TYPE } from '../../constants'
 const cx = classnames.bind(styles)
 
-function getItemStyles (index, initialOffset, currentOffset) {
-  if (!initialOffset || !currentOffset) {
-    return { display: 'none' }
-  }
-
-  return {
-    transform: `translate(${currentOffset.x}px, ${currentOffset.y}px)`,
-    top: 25 * index,
-    border: `2px solid red`,
-  }
-}
+const getTransform = currentOffset => `translate(${currentOffset.x}px, ${currentOffset.y}px)`
+const getItemStyles = (currentOffset, index) => ({
+  transform: getTransform(currentOffset),
+  top: 25 * index,
+})
+const getHintStyles = (currentOffset, size) => ({
+  transform: getTransform(currentOffset),
+  paddingBottom: (size - 1) * 25,
+})
 
 function DragLayer (props) {
   const { item, itemType, isDragging, initialOffset, currentOffset } = useDragLayer(monitor => ({
@@ -36,9 +34,17 @@ function DragLayer (props) {
   const renderItem = () => {
     switch (itemType) {
       case TYPE.CARD:
-        return item.from
-          .getAfterCards(item.card)
-          .map((card, index) => <Card.Suit key={index} card={card} style={getItemStyles(index, initialOffset, currentOffset)} />)
+        const afterCards = item.from.getAfterCards(item.card)
+
+        return (
+          <>
+            {afterCards.map((card, index) => (
+              <Card.Suit key={index} card={card} style={getItemStyles(currentOffset, index)} />
+            ))}
+
+            <Card.Hint style={getHintStyles(currentOffset, afterCards.length)} />
+          </>
+        )
 
       // __NATIVE_FILE__
       default:
@@ -46,7 +52,7 @@ function DragLayer (props) {
     }
   }
 
-  return isDragging ? <div className={cx('drag-layer')}>{renderItem()}</div> : null
+  return isDragging && initialOffset && currentOffset ? <div className={cx('drag-layer')}>{renderItem()}</div> : null
 }
 
 export default DragLayer
