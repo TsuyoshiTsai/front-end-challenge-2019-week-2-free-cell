@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { hot } from 'react-hot-loader'
 import { withRouter } from 'react-router-dom'
-// import PropTypes from 'prop-types'
 import classnames from 'classnames/bind'
 
 // Components
@@ -22,8 +21,6 @@ import styles from './style.module.scss'
 // Variables / Functions
 const cx = classnames.bind(styles)
 
-export const propTypes = {}
-
 function App (props) {
   const [isGiveUpModalOpened, setIsGiveUpModalOpened] = useState(false)
   const [isFailModalOpened, setIsFailModalOpened] = useState(false)
@@ -37,12 +34,16 @@ function App (props) {
   const closeFailModal = () => setIsFailModalOpened(false)
   const openFinishModal = () => setIsFinishModalOpened(true)
   const closeFinishModal = () => setIsFinishModalOpened(false)
-  const resetHint = () => setHint(null)
-  const handleMoveCards = (from, to, size) => setGame({ ...game.move(from, to, size) })
+
   const handleGiveUp = () => setGame(new Game().data)
   const handleHint = () => setHint(game.getHint())
   const handleRestart = () => setGame({ ...game.reset() })
   const handleUndo = () => setGame({ ...game.undo() })
+
+  const onCardsMove = (from, to, size) => {
+    setGame({ ...game.move(from, to, size) })
+    setHint(null)
+  }
 
   const isFinish = game.isFinish()
   const canMove = game.canMove()
@@ -101,18 +102,11 @@ function App (props) {
 
       <main className={cx('app__main')}>
         <section className={cx('app__content')}>
-          <Board
-            game={game}
-            hint={hint}
-            onCardsMove={(from, to, size) => {
-              handleMoveCards(from, to, size)
-              resetHint()
-            }}
-          />
+          <Board game={game} hint={hint} onCardsMove={onCardsMove} />
         </section>
         <footer className={cx('app__footer')}>
           <Rule />
-          <Status />
+          <Status score={game.score} />
 
           <div className={cx('app__action-list')}>
             <Button type='primary' shape='rounded' size='sm' width={120} onClick={openGiveUpModal}>
@@ -133,7 +127,5 @@ function App (props) {
     </div>
   )
 }
-
-App.propTypes = propTypes
 
 export default hot(module)(withRouter(App))

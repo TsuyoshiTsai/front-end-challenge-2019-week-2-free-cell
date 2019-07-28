@@ -1,6 +1,6 @@
 export class CommandManager {
   history // ICommand[]
-  LIMITATION = 2
+  LIMITATION = 20
 
   constructor () {
     this.history = []

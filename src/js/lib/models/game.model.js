@@ -11,6 +11,7 @@ import { CommandManager } from './command-manager.model'
 
 // client
 export class Game {
+  score // number
   columnPiles // IPile[]
   parkingPiles // IPile[]
   fundationPiles // IPile[]
@@ -18,6 +19,8 @@ export class Game {
   movements // Object[]
 
   constructor () {
+    this.score = 0
+
     const cards = flow(
       flatMap(suit => new Array(13).fill(0).map((empty, index) => new Card(index + 1, suit))),
       shuffle
@@ -45,13 +48,13 @@ export class Game {
       columnPiles: cloneDeep(this.columnPiles),
       parkingPiles: cloneDeep(this.parkingPiles),
       fundationPiles: cloneDeep(this.fundationPiles),
-      commandManager: cloneDeep(this.commandManager),
       movements: cloneDeep(this.movements),
     }
   }
 
   get data () {
     const {
+      score,
       columnPiles,
       parkingPiles,
       fundationPiles,
@@ -71,6 +74,7 @@ export class Game {
     } = this
 
     return {
+      score,
       columnPiles,
       parkingPiles,
       fundationPiles,
@@ -144,11 +148,12 @@ export class Game {
   }
 
   reset () {
+    this.score = 0
     this.columnPiles = cloneDeep(this.initialData.columnPiles)
     this.parkingPiles = cloneDeep(this.initialData.parkingPiles)
     this.fundationPiles = cloneDeep(this.initialData.fundationPiles)
-    this.commandManager = cloneDeep(this.initialData.commandManager)
     this.movements = cloneDeep(this.initialData.movements)
+    this.commandManager = new CommandManager()
 
     return this
   }
@@ -157,12 +162,20 @@ export class Game {
     this.commandManager.execute(new MoveCommand(from, to, size))
     this.updateMovements()
 
+    if (this.fundationPiles.includes(to)) {
+      this.score = this.score + 10
+    } else {
+      this.score = this.score - 1
+    }
+
     return this
   }
 
   undo () {
     this.commandManager.unexecute()
     this.updateMovements()
+
+    this.score = this.score - 1
 
     return this
   }
