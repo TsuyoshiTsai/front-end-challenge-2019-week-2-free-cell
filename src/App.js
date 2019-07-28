@@ -6,6 +6,7 @@ import classnames from 'classnames/bind'
 
 // Components
 import FailModal from './js/components/FailModal'
+import FinishModal from './js/components/FinishModal'
 import GiveUpModal from './js/components/GiveUpModal'
 import Button from './js/components/Button'
 import Board from './js/components/Board'
@@ -26,6 +27,7 @@ export const propTypes = {}
 function App (props) {
   const [isGiveUpModalOpened, setIsGiveUpModalOpened] = useState(false)
   const [isFailModalOpened, setIsFailModalOpened] = useState(false)
+  const [isFinishModalOpened, setIsFinishModalOpened] = useState(false)
   const [hint, setHint] = useState(null)
   const [game, setGame] = useState(new Game().data)
   console.log('game :', game)
@@ -39,6 +41,12 @@ function App (props) {
       setIsFailModalOpened(true)
     }
   }, [isFail])
+
+  useEffect(() => {
+    if (isFinish) {
+      setIsFinishModalOpened(true)
+    }
+  }, [isFinish])
 
   const onCardsMove = (from, to, size) => {
     setGame({ ...game.move(from, to, size) })
@@ -62,6 +70,7 @@ function App (props) {
         onRestart={onRestart}
         onUndo={onUndo}
       />
+      <FinishModal isOpened={isFinishModalOpened} onClose={event => setIsFinishModalOpened(false)} onGiveUp={onGiveUp} />
 
       <main className={cx('app__main')}>
         <section className={cx('app__content')}>
